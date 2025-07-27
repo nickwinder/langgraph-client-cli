@@ -1,0 +1,14 @@
+{
+  "graphId": "weather-graph",
+  "name": "Weather Assistant",
+  "metadata": {
+    "name": "Weather Assistant",
+    "description": "A helpful assistant that provides weather information",
+    "version": "1.0.0"
+  },
+  "config": {
+    "temperature": 0.7,
+    "max_tokens": 150,
+    "model": "gpt-4o-mini"
+  }
+}

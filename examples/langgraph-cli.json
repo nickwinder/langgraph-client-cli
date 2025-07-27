@@ -1,0 +1,7 @@
+{
+  "url": "http://localhost:2024",
+  "apiKey": "your-api-key-here",
+  "defaultAssistant": "assistant-123",
+  "timeout": 30000,
+  "retries": 3
+}

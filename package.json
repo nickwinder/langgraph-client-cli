@@ -1,0 +1,36 @@
+{
+  "name": "langgraph-client-cli",
+  "version": "1.0.0",
+  "description": "A CLI wrapper for the LangGraph SDK",
+  "main": "dist/index.js",
+  "bin": {
+    "langgraph-client-cli": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc && node dist/index.js",
+    "start": "node dist/index.js",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "format": "prettier --write src/**/*.ts",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "@langchain/langgraph-sdk": "^0.0.33",
+    "commander": "^12.1.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "typescript": "^5.5.3",
+    "eslint": "^8.57.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "prettier": "^3.4.2",
+    "jest": "^29.7.0",
+    "@types/jest": "^29.5.14",
+    "ts-jest": "^29.2.5"
+  },
+  "private": true
+}
