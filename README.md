@@ -15,66 +15,63 @@ A powerful TypeScript command-line interface for the LangGraph SDK that provides
 - 🔧 **CLI Option Override** - Command-line options take precedence over all other config
 - 🔍 **Configuration Validation** - Runtime validation with helpful error messages
 
-### 🛠️ **Developer Experience**
-- 📝 **TypeScript** - Full type safety and IntelliSense support
-- 🧪 **Comprehensive Testing** - Jest-based test suite with core utility coverage
-- 🎨 **Code Quality** - ESLint and Prettier configured for consistent code style
-- 📚 **Extensive Documentation** - Detailed examples and troubleshooting guides
-
-### 🚀 **Production Ready**
-- 🔐 **Secure Configuration** - Support for secrets management and environment-based config
-- 🌐 **Multiple Deployment Options** - npm exec, global install, or direct Node.js execution
-- ⚡ **Performance Optimized** - Efficient SDK usage with proper error handling
-- 📊 **Detailed Logging** - Connection status and authentication feedback
-
 ## Installation
 
+### 🚀 Quick Start (Recommended)
+
+No installation required! Use npx to run the CLI directly:
+
 ```bash
+npx langgraph-client-cli@latest <command> [options]
+```
+
+### 📦 Alternative Installation Methods
+
+**For development or local modifications:**
+```bash
+git clone https://github.com/nickwinder/langgraph-client-cli
+cd langgraph-client-cli
 npm install
 npm run build
 ```
 
-For global installation:
+**For global installation:**
 ```bash
-npm install -g .
+npm install -g langgraph-client-cli
 ```
 
 ## Running the CLI
 
-There are several ways to run the CLI:
-
-### 1. Using npm exec (recommended for development)
+### 1. 🚀 Using npx (Recommended)
 ```bash
-npm exec -- langgraph-client-cli <command> [options]
+npx langgraph-client-cli@latest <command> [options]
 ```
-> **Note:** The `--` is required when passing options to prevent npm from interpreting them.
+> **Best choice:** Always gets the latest version, no installation required!
 
-### 2. Direct Node.js execution
-```bash
-node dist/index.js <command> [options]
-```
-
-### 3. Global installation
+### 2. Global installation
 ```bash
 # Install globally first
-npm install -g .
+npm install -g langgraph-client-cli
 
 # Then run directly
 langgraph-client-cli <command> [options]
+```
+
+### 3. Local development
+```bash
+# For development or local modifications
+npm exec -- langgraph-client-cli <command> [options]
+# or
+node dist/index.js <command> [options]
 ```
 
 ## 🚀 Quick Start
 
 Get up and running in under 2 minutes:
 
-### 1️⃣ **Install and Build**
+### 1️⃣ **Initialize Configuration**
 ```bash
-npm install && npm run build
-```
-
-### 2️⃣ **Initialize Configuration**
-```bash
-npm exec -- langgraph-client-cli config init
+npx langgraph-client-cli@latest config init
 ```
 
 ### 3️⃣ **Configure Your Server**
@@ -94,18 +91,18 @@ export LANGGRAPH_API_URL="http://localhost:2024"
 export LANGGRAPH_API_KEY="your-api-key"
 ```
 
-### 4️⃣ **Start LangGraph Server** (if needed)
+### 3️⃣ **Start LangGraph Server** (if needed)
 ```bash
 npx @langchain/langgraph-cli dev
 ```
 
-### 5️⃣ **Test Your Setup**
+### 4️⃣ **Test Your Setup**
 ```bash
-npm exec -- langgraph-client-cli config show
-npm exec -- langgraph-client-cli assistants list
+npx langgraph-client-cli@latest config show
+npx langgraph-client-cli@latest assistants list
 ```
 
-> 💡 **Tip:** When using `npm exec`, the `--` separator is required before CLI options. For easier usage, consider global installation: `npm install -g .`
+> 💡 **Tip:** Using `npx` always gets the latest version and requires no installation!
 
 ## Configuration
 
@@ -119,13 +116,13 @@ The CLI supports multiple configuration methods with a clear precedence order. C
 
 ```bash
 # Initialize a new configuration file
-npm exec -- langgraph-client-cli config init
+npx langgraph-client-cli@latest config init
 
 # Show current configuration and environment variables  
-npm exec -- langgraph-client-cli config show
+npx langgraph-client-cli@latest config show
 
 # Initialize with custom settings
-npm exec -- langgraph-client-cli config init --force  # Overwrites existing config
+npx langgraph-client-cli@latest config init --force  # Overwrites existing config
 ```
 
 ### Configuration File (`langgraph-cli.json`)
@@ -180,7 +177,7 @@ export LANGGRAPH_RETRIES="3"
 **Example 1: CLI options override everything**
 ```bash
 # Even if config file has different values, CLI options take precedence
-langgraph-client-cli assistants list \
+npx langgraph-client-cli@latest assistants list \
   --url https://production.example.com \
   --api-key prod-key-123
 ```
@@ -191,13 +188,13 @@ export LANGGRAPH_API_URL="https://staging.example.com"
 export LANGGRAPH_API_KEY="staging-key-456"
 
 # Will use staging environment even if config file points to localhost
-langgraph-client-cli assistants list
+npx langgraph-client-cli@latest assistants list
 ```
 
 **Example 3: Custom config file**
 ```bash
 # Use a specific config file
-langgraph-client-cli assistants list -c ./production-config.json
+npx langgraph-client-cli@latest assistants list -c ./production-config.json
 ```
 
 ### Configuration Validation
@@ -222,7 +219,7 @@ For local development with the LangGraph server:
 npx @langchain/langgraph-cli dev
 
 # 2. Initialize config pointing to local server
-langgraph-client-cli config init
+npx langgraph-client-cli@latest config init
 
 # 3. The default config will be:
 {
@@ -233,8 +230,8 @@ langgraph-client-cli config init
 }
 
 # 4. Test the connection
-npm exec -- langgraph-client-cli config show
-npm exec -- langgraph-client-cli assistants list
+npx langgraph-client-cli@latest config show
+npx langgraph-client-cli@latest assistants list
 ```
 
 ### Production Setup
@@ -257,7 +254,7 @@ cat > langgraph-cli.json << EOF
 EOF
 
 # Option 3: Pass via CLI (for scripts)
-langgraph-client-cli assistants list \
+npx langgraph-client-cli@latest assistants list \
   --url "$PRODUCTION_URL" \
   --api-key "$PRODUCTION_KEY"
 ```
@@ -266,7 +263,7 @@ langgraph-client-cli assistants list \
 
 **Check current configuration:**
 ```bash
-langgraph-client-cli config show
+npx langgraph-client-cli@latest config show
 ```
 
 **Common issues:**
@@ -290,54 +287,54 @@ langgraph-client-cli config show
 
 ```bash
 # List all assistants
-langgraph-client-cli assistants list
+npx langgraph-client-cli@latest assistants list
 
 # Get a specific assistant
-langgraph-client-cli assistants get <assistant_id>
+npx langgraph-client-cli@latest assistants get <assistant_id>
 
 # Create an assistant from JSON config
-langgraph-client-cli assistants create <config_file.json>
+npx langgraph-client-cli@latest assistants create <config_file.json>
 
 # Delete an assistant
-langgraph-client-cli assistants delete <assistant_id>
+npx langgraph-client-cli@latest assistants delete <assistant_id>
 ```
 
 ### Threads
 
 ```bash
 # List all threads
-langgraph-client-cli threads list
+npx langgraph-client-cli@latest threads list
 
 # Get a specific thread
-langgraph-client-cli threads get <thread_id>
+npx langgraph-client-cli@latest threads get <thread_id>
 
 # Create a new thread
-langgraph-client-cli threads create --metadata '{"key": "value"}'
+npx langgraph-client-cli@latest threads create --metadata '{"key": "value"}'
 
 # Delete a thread
-langgraph-client-cli threads delete <thread_id>
+npx langgraph-client-cli@latest threads delete <thread_id>
 
 # Get thread state
-langgraph-client-cli threads state <thread_id>
+npx langgraph-client-cli@latest threads state <thread_id>
 ```
 
 ### Runs
 
 ```bash
 # List runs for a thread
-langgraph-client-cli runs list <thread_id>
+npx langgraph-client-cli@latest runs list <thread_id>
 
 # Get a specific run
-langgraph-client-cli runs get <thread_id> <run_id>
+npx langgraph-client-cli@latest runs get <thread_id> <run_id>
 
 # Create a new run
-langgraph-client-cli runs create <thread_id> <assistant_id> --input '{"messages": [{"role": "human", "content": "Hello"}]}'
+npx langgraph-client-cli@latest runs create <thread_id> <assistant_id> --input '{"messages": [{"role": "human", "content": "Hello"}]}'
 
 # Stream a run with real-time updates
-langgraph-client-cli runs stream <thread_id> <assistant_id> --input '{"messages": [{"role": "human", "content": "Hello"}]}' --stream-mode values
+npx langgraph-client-cli@latest runs stream <thread_id> <assistant_id> --input '{"messages": [{"role": "human", "content": "Hello"}]}' --stream-mode values
 
 # Cancel a running execution
-langgraph-client-cli runs cancel <thread_id> <run_id>
+npx langgraph-client-cli@latest runs cancel <thread_id> <run_id>
 ```
 
 ### Global Options
@@ -354,7 +351,7 @@ All commands support these global options:
 
 **Stream a conversation with real-time updates:**
 ```bash
-npm exec -- langgraph-client-cli runs stream thread-123 assistant-456 \
+npx langgraph-client-cli@latest runs stream thread-123 assistant-456 \
   --input '{"messages": [{"role": "human", "content": "What is the weather like?"}]}' \
   --stream-mode values
 ```
@@ -362,13 +359,13 @@ npm exec -- langgraph-client-cli runs stream thread-123 assistant-456 \
 **Create and manage a conversation thread:**
 ```bash
 # Create a new thread with metadata
-npm exec -- langgraph-client-cli threads create --metadata '{"user": "john", "session": "abc123"}'
+npx langgraph-client-cli@latest threads create --metadata '{"user": "john", "session": "abc123"}'
 
 # Get thread state
-npm exec -- langgraph-client-cli threads state thread-456
+npx langgraph-client-cli@latest threads state thread-456
 
 # Create a run on the thread
-npm exec -- langgraph-client-cli runs create thread-456 assistant-789 \
+npx langgraph-client-cli@latest runs create thread-456 assistant-789 \
   --input '{"messages": [{"role": "human", "content": "Hello!"}]}'
 ```
 
@@ -378,19 +375,19 @@ export LANGGRAPH_API_URL="https://api.your-company.com"
 export LANGGRAPH_API_KEY="$(cat /path/to/secret)"
 
 # All commands now use production settings
-npm exec -- langgraph-client-cli assistants list --limit 50
+npx langgraph-client-cli@latest assistants list --limit 50
 ```
 
 ### 🔧 **Configuration Scenarios**
 
 **Development with config file:**
 ```bash
-npm exec -- langgraph-client-cli assistants list -c ./dev-config.json
+npx langgraph-client-cli@latest assistants list -c ./dev-config.json
 ```
 
 **Override config for specific command:**
 ```bash
-npm exec -- langgraph-client-cli assistants list \
+npx langgraph-client-cli@latest assistants list \
   --url https://staging.example.com \
   --api-key staging-key-123
 ```
@@ -415,7 +412,7 @@ Create an `assistant-config.json` file:
 Then create the assistant:
 
 ```bash
-langgraph-client-cli assistants create assistant-config.json
+npx langgraph-client-cli@latest assistants create assistant-config.json
 ```
 
 ## Development
