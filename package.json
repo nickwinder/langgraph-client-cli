@@ -1,5 +1,5 @@
 {
-  "name": "@nfxdevelopment/langgraph-client-cli",
+  "name": "langgraph-client-cli",
   "version": "0.0.1",
   "description": "A CLI wrapper for the LangGraph SDK",
   "main": "dist/index.js",

@@ -45,7 +45,7 @@ There are several ways to run the CLI:
 
 ### 1. Using npm exec (recommended for development)
 ```bash
-npm exec -- @nfxdevelopment/@nfxdevelopment/langgraph-client-cli <command> [options]
+npm exec -- langgraph-client-cli <command> [options]
 ```
 > **Note:** The `--` is required when passing options to prevent npm from interpreting them.
 
@@ -60,7 +60,7 @@ node dist/index.js <command> [options]
 npm install -g .
 
 # Then run directly
-@nfxdevelopment/langgraph-client-cli <command> [options]
+langgraph-client-cli <command> [options]
 ```
 
 ## 🚀 Quick Start
@@ -74,7 +74,7 @@ npm install && npm run build
 
 ### 2️⃣ **Initialize Configuration**
 ```bash
-npm exec -- @nfxdevelopment/@nfxdevelopment/langgraph-client-cli config init
+npm exec -- langgraph-client-cli config init
 ```
 
 ### 3️⃣ **Configure Your Server**
@@ -101,8 +101,8 @@ npx @langchain/langgraph-cli dev
 
 ### 5️⃣ **Test Your Setup**
 ```bash
-npm exec -- @nfxdevelopment/@nfxdevelopment/langgraph-client-cli config show
-npm exec -- @nfxdevelopment/@nfxdevelopment/langgraph-client-cli assistants list
+npm exec -- langgraph-client-cli config show
+npm exec -- langgraph-client-cli assistants list
 ```
 
 > 💡 **Tip:** When using `npm exec`, the `--` separator is required before CLI options. For easier usage, consider global installation: `npm install -g .`
@@ -119,13 +119,13 @@ The CLI supports multiple configuration methods with a clear precedence order. C
 
 ```bash
 # Initialize a new configuration file
-npm exec -- @nfxdevelopment/@nfxdevelopment/langgraph-client-cli config init
+npm exec -- langgraph-client-cli config init
 
 # Show current configuration and environment variables  
-npm exec -- @nfxdevelopment/@nfxdevelopment/langgraph-client-cli config show
+npm exec -- langgraph-client-cli config show
 
 # Initialize with custom settings
-npm exec -- @nfxdevelopment/@nfxdevelopment/langgraph-client-cli config init --force  # Overwrites existing config
+npm exec -- langgraph-client-cli config init --force  # Overwrites existing config
 ```
 
 ### Configuration File (`langgraph-cli.json`)
@@ -180,7 +180,7 @@ export LANGGRAPH_RETRIES="3"
 **Example 1: CLI options override everything**
 ```bash
 # Even if config file has different values, CLI options take precedence
-@nfxdevelopment/langgraph-client-cli assistants list \
+langgraph-client-cli assistants list \
   --url https://production.example.com \
   --api-key prod-key-123
 ```
@@ -191,13 +191,13 @@ export LANGGRAPH_API_URL="https://staging.example.com"
 export LANGGRAPH_API_KEY="staging-key-456"
 
 # Will use staging environment even if config file points to localhost
-@nfxdevelopment/langgraph-client-cli assistants list
+langgraph-client-cli assistants list
 ```
 
 **Example 3: Custom config file**
 ```bash
 # Use a specific config file
-@nfxdevelopment/langgraph-client-cli assistants list -c ./production-config.json
+langgraph-client-cli assistants list -c ./production-config.json
 ```
 
 ### Configuration Validation
@@ -222,7 +222,7 @@ For local development with the LangGraph server:
 npx @langchain/langgraph-cli dev
 
 # 2. Initialize config pointing to local server
-@nfxdevelopment/langgraph-client-cli config init
+langgraph-client-cli config init
 
 # 3. The default config will be:
 {
@@ -233,8 +233,8 @@ npx @langchain/langgraph-cli dev
 }
 
 # 4. Test the connection
-npm exec -- @nfxdevelopment/@nfxdevelopment/langgraph-client-cli config show
-npm exec -- @nfxdevelopment/@nfxdevelopment/langgraph-client-cli assistants list
+npm exec -- langgraph-client-cli config show
+npm exec -- langgraph-client-cli assistants list
 ```
 
 ### Production Setup
@@ -257,7 +257,7 @@ cat > langgraph-cli.json << EOF
 EOF
 
 # Option 3: Pass via CLI (for scripts)
-@nfxdevelopment/langgraph-client-cli assistants list \
+langgraph-client-cli assistants list \
   --url "$PRODUCTION_URL" \
   --api-key "$PRODUCTION_KEY"
 ```
@@ -266,7 +266,7 @@ EOF
 
 **Check current configuration:**
 ```bash
-@nfxdevelopment/langgraph-client-cli config show
+langgraph-client-cli config show
 ```
 
 **Common issues:**
@@ -290,54 +290,54 @@ EOF
 
 ```bash
 # List all assistants
-@nfxdevelopment/langgraph-client-cli assistants list
+langgraph-client-cli assistants list
 
 # Get a specific assistant
-@nfxdevelopment/langgraph-client-cli assistants get <assistant_id>
+langgraph-client-cli assistants get <assistant_id>
 
 # Create an assistant from JSON config
-@nfxdevelopment/langgraph-client-cli assistants create <config_file.json>
+langgraph-client-cli assistants create <config_file.json>
 
 # Delete an assistant
-@nfxdevelopment/langgraph-client-cli assistants delete <assistant_id>
+langgraph-client-cli assistants delete <assistant_id>
 ```
 
 ### Threads
 
 ```bash
 # List all threads
-@nfxdevelopment/langgraph-client-cli threads list
+langgraph-client-cli threads list
 
 # Get a specific thread
-@nfxdevelopment/langgraph-client-cli threads get <thread_id>
+langgraph-client-cli threads get <thread_id>
 
 # Create a new thread
-@nfxdevelopment/langgraph-client-cli threads create --metadata '{"key": "value"}'
+langgraph-client-cli threads create --metadata '{"key": "value"}'
 
 # Delete a thread
-@nfxdevelopment/langgraph-client-cli threads delete <thread_id>
+langgraph-client-cli threads delete <thread_id>
 
 # Get thread state
-@nfxdevelopment/langgraph-client-cli threads state <thread_id>
+langgraph-client-cli threads state <thread_id>
 ```
 
 ### Runs
 
 ```bash
 # List runs for a thread
-@nfxdevelopment/langgraph-client-cli runs list <thread_id>
+langgraph-client-cli runs list <thread_id>
 
 # Get a specific run
-@nfxdevelopment/langgraph-client-cli runs get <thread_id> <run_id>
+langgraph-client-cli runs get <thread_id> <run_id>
 
 # Create a new run
-@nfxdevelopment/langgraph-client-cli runs create <thread_id> <assistant_id> --input '{"messages": [{"role": "human", "content": "Hello"}]}'
+langgraph-client-cli runs create <thread_id> <assistant_id> --input '{"messages": [{"role": "human", "content": "Hello"}]}'
 
 # Stream a run with real-time updates
-@nfxdevelopment/langgraph-client-cli runs stream <thread_id> <assistant_id> --input '{"messages": [{"role": "human", "content": "Hello"}]}' --stream-mode values
+langgraph-client-cli runs stream <thread_id> <assistant_id> --input '{"messages": [{"role": "human", "content": "Hello"}]}' --stream-mode values
 
 # Cancel a running execution
-@nfxdevelopment/langgraph-client-cli runs cancel <thread_id> <run_id>
+langgraph-client-cli runs cancel <thread_id> <run_id>
 ```
 
 ### Global Options
@@ -354,7 +354,7 @@ All commands support these global options:
 
 **Stream a conversation with real-time updates:**
 ```bash
-npm exec -- @nfxdevelopment/@nfxdevelopment/langgraph-client-cli runs stream thread-123 assistant-456 \
+npm exec -- langgraph-client-cli runs stream thread-123 assistant-456 \
   --input '{"messages": [{"role": "human", "content": "What is the weather like?"}]}' \
   --stream-mode values
 ```
@@ -362,13 +362,13 @@ npm exec -- @nfxdevelopment/@nfxdevelopment/langgraph-client-cli runs stream thr
 **Create and manage a conversation thread:**
 ```bash
 # Create a new thread with metadata
-npm exec -- @nfxdevelopment/@nfxdevelopment/langgraph-client-cli threads create --metadata '{"user": "john", "session": "abc123"}'
+npm exec -- langgraph-client-cli threads create --metadata '{"user": "john", "session": "abc123"}'
 
 # Get thread state
-npm exec -- @nfxdevelopment/@nfxdevelopment/langgraph-client-cli threads state thread-456
+npm exec -- langgraph-client-cli threads state thread-456
 
 # Create a run on the thread
-npm exec -- @nfxdevelopment/@nfxdevelopment/langgraph-client-cli runs create thread-456 assistant-789 \
+npm exec -- langgraph-client-cli runs create thread-456 assistant-789 \
   --input '{"messages": [{"role": "human", "content": "Hello!"}]}'
 ```
 
@@ -378,19 +378,19 @@ export LANGGRAPH_API_URL="https://api.your-company.com"
 export LANGGRAPH_API_KEY="$(cat /path/to/secret)"
 
 # All commands now use production settings
-npm exec -- @nfxdevelopment/@nfxdevelopment/langgraph-client-cli assistants list --limit 50
+npm exec -- langgraph-client-cli assistants list --limit 50
 ```
 
 ### 🔧 **Configuration Scenarios**
 
 **Development with config file:**
 ```bash
-npm exec -- @nfxdevelopment/@nfxdevelopment/langgraph-client-cli assistants list -c ./dev-config.json
+npm exec -- langgraph-client-cli assistants list -c ./dev-config.json
 ```
 
 **Override config for specific command:**
 ```bash
-npm exec -- @nfxdevelopment/@nfxdevelopment/langgraph-client-cli assistants list \
+npm exec -- langgraph-client-cli assistants list \
   --url https://staging.example.com \
   --api-key staging-key-123
 ```
@@ -415,7 +415,7 @@ Create an `assistant-config.json` file:
 Then create the assistant:
 
 ```bash
-@nfxdevelopment/langgraph-client-cli assistants create assistant-config.json
+langgraph-client-cli assistants create assistant-config.json
 ```
 
 ## Development
@@ -506,7 +506,7 @@ We welcome contributions! Here's how to get started:
 ```bash
 # Clone and setup
 git clone <your-fork>
-cd @nfxdevelopment/langgraph-client-cli
+cd langgraph-client-cli
 npm install
 
 # Development
