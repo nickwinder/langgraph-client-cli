@@ -1,6 +1,6 @@
 {
   "name": "langgraph-client-cli",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A CLI wrapper for the LangGraph SDK",
   "main": "dist/index.js",
   "bin": {
