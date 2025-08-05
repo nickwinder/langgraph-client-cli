@@ -2,13 +2,14 @@
 
 import { Command } from 'commander';
 import { createAssistantsCommand, createThreadsCommand, createRunsCommand, createConfigCommand } from './commands';
+import { getVersion } from './utils';
 
 const program = new Command();
 
 program
   .name('langgraph-client-cli')
   .description('CLI wrapper for the LangGraph SDK')
-  .version('1.0.0');
+  .version(getVersion());
 
 // Add a global option for verbose output
 program.option('-v, --verbose', 'enable verbose output');
