@@ -6,7 +6,7 @@ import { createAssistantsCommand, createThreadsCommand, createRunsCommand, creat
 const program = new Command();
 
 program
-  .name('langgraph-client-cli')
+  .name('@nfxdevelopment/langgraph-client-cli')
   .description('CLI wrapper for the LangGraph SDK')
   .version('1.0.0');
 
