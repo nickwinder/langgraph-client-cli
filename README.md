@@ -8,6 +8,7 @@ A powerful TypeScript command-line interface for the LangGraph SDK that provides
 - 🤖 **Assistants Management** - List, get, create, and delete assistants
 - 🧵 **Threads Management** - Create, list, get, delete threads, and retrieve state  
 - 🔄 **Runs Management** - Create, stream, list, get, and cancel runs with real-time updates
+- 🗄️ **Store Management** - Full CRUD operations for key-value store with search and filtering
 
 ### ⚙️ **Advanced Configuration**
 - 📁 **File-based Configuration** - JSON config files with automatic discovery
@@ -337,6 +338,34 @@ npx langgraph-client-cli@latest runs stream <thread_id> <assistant_id> --input '
 npx langgraph-client-cli@latest runs cancel <thread_id> <run_id>
 ```
 
+### Store (Key-Value Storage)
+
+```bash
+# Get an item from the store
+npx langgraph-client-cli@latest store get <namespace> <key>
+
+# Set an item in the store (supports JSON or string values)
+npx langgraph-client-cli@latest store set <namespace> <key> <value>
+
+# Delete an item from the store
+npx langgraph-client-cli@latest store delete <namespace> <key>
+
+# List items in a namespace
+npx langgraph-client-cli@latest store list <namespace>
+
+# List items with search query
+npx langgraph-client-cli@latest store list <namespace> --query "search term"
+
+# List items with pagination
+npx langgraph-client-cli@latest store list <namespace> --limit 20 --offset 10
+
+# List all namespaces
+npx langgraph-client-cli@latest store namespaces
+
+# List namespaces with filtering
+npx langgraph-client-cli@latest store namespaces --prefix "user,session" --suffix "data"
+```
+
 ### Global Options
 
 All commands support these global options:
@@ -367,6 +396,24 @@ npx langgraph-client-cli@latest threads state thread-456
 # Create a run on the thread
 npx langgraph-client-cli@latest runs create thread-456 assistant-789 \
   --input '{"messages": [{"role": "human", "content": "Hello!"}]}'
+```
+
+**Manage key-value store data:**
+```bash
+# Store user preferences
+npx langgraph-client-cli@latest store set user-123 preferences '{"theme": "dark", "language": "en"}'
+
+# Retrieve user data
+npx langgraph-client-cli@latest store get user-123 preferences
+
+# Store session data
+npx langgraph-client-cli@latest store set session-456 state '{"step": 3, "data": {"key": "value"}}'
+
+# Search for user sessions
+npx langgraph-client-cli@latest store list session --query "user-123" --limit 10
+
+# Clean up old sessions
+npx langgraph-client-cli@latest store delete session-456 state
 ```
 
 **Production deployment with environment variables:**
