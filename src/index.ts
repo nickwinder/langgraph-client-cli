@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import { createAssistantsCommand, createThreadsCommand, createRunsCommand, createConfigCommand } from './commands';
+import { createAssistantsCommand, createThreadsCommand, createRunsCommand, createConfigCommand, createStoreCommand } from './commands';
 import { getVersion } from './utils';
 
 const program = new Command();
@@ -18,6 +18,7 @@ program.addCommand(createConfigCommand());
 program.addCommand(createAssistantsCommand());
 program.addCommand(createThreadsCommand());
 program.addCommand(createRunsCommand());
+program.addCommand(createStoreCommand());
 
 // Show help if no command is provided
 if (process.argv.length <= 2) {
