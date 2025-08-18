@@ -575,4 +575,6 @@ MIT License - see [LICENSE](LICENSE) for details.
   <a href="https://langchain-ai.github.io/langgraphjs/">Documentation</a> • 
   <a href="https://github.com/nickwinder/langgraph-client-cli/issues">Report Bug</a> • 
   <a href="https://github.com/nickwinder/langgraph-client-cli/issues">Request Feature</a>
+  <br><br>
+  <strong>Created by <a href="https://x.com/nfxDevelopment">Nick Winder</a></strong>
 </div>
