@@ -46,7 +46,7 @@ describe('Store Command', () => {
     };
     
     // Mock createClient to return our mock client
-    (createClient as jest.Mock).mockResolvedValue(mockClient);
+    (createClient as jest.Mock).mockReturnValue(mockClient);
   });
 
   afterEach(() => {
@@ -55,6 +55,56 @@ describe('Store Command', () => {
   });
 
   describe('store get', () => {
+    it('should handle multi-part namespaces with dots', async () => {
+      const mockItem = {
+        namespace: ['part1', 'part2', 'part3'],
+        key: 'test-key',
+        value: { data: 'test-value' },
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z'
+      };
+      
+      mockStore.getItem.mockResolvedValue(mockItem);
+      
+      const command = createStoreCommand();
+      await command.parseAsync(['node', 'test', 'get', 'part1.part2.part3', 'test-key']);
+      
+      expect(mockStore.getItem).toHaveBeenCalledWith(['part1', 'part2', 'part3'], 'test-key');
+    });
+
+    it('should handle multi-part namespaces with commas', async () => {
+      const mockItem = {
+        namespace: ['part1', 'part2', 'part3'],
+        key: 'test-key',
+        value: { data: 'test-value' },
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z'
+      };
+      
+      mockStore.getItem.mockResolvedValue(mockItem);
+      
+      const command = createStoreCommand();
+      await command.parseAsync(['node', 'test', 'get', 'part1,part2,part3', 'test-key']);
+      
+      expect(mockStore.getItem).toHaveBeenCalledWith(['part1', 'part2', 'part3'], 'test-key');
+    });
+
+    it('should handle mixed separators and trim whitespace', async () => {
+      const mockItem = {
+        namespace: ['part1', 'part2', 'part3'],
+        key: 'test-key',
+        value: { data: 'test-value' },
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z'
+      };
+      
+      mockStore.getItem.mockResolvedValue(mockItem);
+      
+      const command = createStoreCommand();
+      await command.parseAsync(['node', 'test', 'get', 'part1, part2.part3', 'test-key']);
+      
+      expect(mockStore.getItem).toHaveBeenCalledWith(['part1', 'part2', 'part3'], 'test-key');
+    });
     it('should retrieve an item from the store', async () => {
       const mockItem = {
         namespace: 'test-namespace',
@@ -91,6 +141,31 @@ describe('Store Command', () => {
   });
 
   describe('store set', () => {
+    it('should handle multi-part namespaces with dots', async () => {
+      const command = createStoreCommand();
+      await command.parseAsync([
+        'node', 'test', 'set', 'part1.part2.part3', 'test-key', '{"data":"test-value"}'
+      ]);
+      
+      expect(mockStore.putItem).toHaveBeenCalledWith(
+        ['part1', 'part2', 'part3'],
+        'test-key',
+        { value: { data: 'test-value' } }
+      );
+    });
+
+    it('should handle multi-part namespaces with commas', async () => {
+      const command = createStoreCommand();
+      await command.parseAsync([
+        'node', 'test', 'set', 'part1,part2,part3', 'test-key', '{"data":"test-value"}'
+      ]);
+      
+      expect(mockStore.putItem).toHaveBeenCalledWith(
+        ['part1', 'part2', 'part3'],
+        'test-key',
+        { value: { data: 'test-value' } }
+      );
+    });
     it('should set a JSON value in the store', async () => {
       const command = createStoreCommand();
       await command.parseAsync([
@@ -122,6 +197,19 @@ describe('Store Command', () => {
   });
 
   describe('store delete', () => {
+    it('should handle multi-part namespaces with dots', async () => {
+      const command = createStoreCommand();
+      await command.parseAsync(['node', 'test', 'delete', 'part1.part2.part3', 'test-key']);
+      
+      expect(mockStore.deleteItem).toHaveBeenCalledWith(['part1', 'part2', 'part3'], 'test-key');
+    });
+
+    it('should handle multi-part namespaces with commas', async () => {
+      const command = createStoreCommand();
+      await command.parseAsync(['node', 'test', 'delete', 'part1,part2,part3', 'test-key']);
+      
+      expect(mockStore.deleteItem).toHaveBeenCalledWith(['part1', 'part2', 'part3'], 'test-key');
+    });
     it('should delete an item from the store', async () => {
       const command = createStoreCommand();
       await command.parseAsync(['node', 'test', 'delete', 'test-namespace', 'test-key']);
@@ -134,6 +222,31 @@ describe('Store Command', () => {
   });
 
   describe('store list', () => {
+    it('should handle multi-part namespaces with dots', async () => {
+      mockStore.searchItems.mockResolvedValue({ items: [] });
+      
+      const command = createStoreCommand();
+      await command.parseAsync(['node', 'test', 'list', 'part1.part2.part3']);
+      
+      expect(mockStore.searchItems).toHaveBeenCalledWith(['part1', 'part2', 'part3'], {
+        limit: 10,
+        offset: undefined,
+        query: undefined
+      });
+    });
+
+    it('should handle multi-part namespaces with commas', async () => {
+      mockStore.searchItems.mockResolvedValue({ items: [] });
+      
+      const command = createStoreCommand();
+      await command.parseAsync(['node', 'test', 'list', 'part1,part2,part3']);
+      
+      expect(mockStore.searchItems).toHaveBeenCalledWith(['part1', 'part2', 'part3'], {
+        limit: 10,
+        offset: undefined,
+        query: undefined
+      });
+    });
     it('should list items in a namespace', async () => {
       const mockItems = {
         items: [
@@ -214,6 +327,60 @@ describe('Store Command', () => {
         suffix: undefined
       });
       expect(consoleLogSpy).toHaveBeenCalled();
+    });
+
+    it('should handle prefix and suffix filters with dots', async () => {
+      mockStore.listNamespaces.mockResolvedValue({ namespaces: [] });
+      
+      const command = createStoreCommand();
+      await command.parseAsync([
+        'node', 'test', 'namespaces',
+        '--prefix', 'prefix1.prefix2',
+        '--suffix', 'suffix1.suffix2'
+      ]);
+      
+      expect(mockStore.listNamespaces).toHaveBeenCalledWith({
+        limit: 50,
+        offset: undefined,
+        prefix: ['prefix1', 'prefix2'],
+        suffix: ['suffix1', 'suffix2']
+      });
+    });
+
+    it('should handle prefix and suffix filters with commas', async () => {
+      mockStore.listNamespaces.mockResolvedValue({ namespaces: [] });
+      
+      const command = createStoreCommand();
+      await command.parseAsync([
+        'node', 'test', 'namespaces',
+        '--prefix', 'prefix1,prefix2',
+        '--suffix', 'suffix1,suffix2'
+      ]);
+      
+      expect(mockStore.listNamespaces).toHaveBeenCalledWith({
+        limit: 50,
+        offset: undefined,
+        prefix: ['prefix1', 'prefix2'],
+        suffix: ['suffix1', 'suffix2']
+      });
+    });
+
+    it('should handle mixed separators in prefix and suffix', async () => {
+      mockStore.listNamespaces.mockResolvedValue({ namespaces: [] });
+      
+      const command = createStoreCommand();
+      await command.parseAsync([
+        'node', 'test', 'namespaces',
+        '--prefix', 'prefix1, prefix2.prefix3',
+        '--suffix', 'suffix1.suffix2, suffix3'
+      ]);
+      
+      expect(mockStore.listNamespaces).toHaveBeenCalledWith({
+        limit: 50,
+        offset: undefined,
+        prefix: ['prefix1', 'prefix2', 'prefix3'],
+        suffix: ['suffix1', 'suffix2', 'suffix3']
+      });
     });
 
     it('should handle empty namespace list', async () => {

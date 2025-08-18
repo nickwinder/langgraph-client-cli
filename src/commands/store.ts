@@ -1,6 +1,11 @@
 import { Command } from 'commander';
 import { createClient, loadConfig, mergeConfig, handleError } from '../utils';
 
+// Helper function to parse namespace strings with dot or comma separators
+function parseNamespace(namespace: string): string[] {
+  return namespace.split(/[,.]/).map(ns => ns.trim()).filter(ns => ns.length > 0);
+}
+
 export function createStoreCommand(): Command {
   const store = new Command('store')
     .description('Manage key-value store items');
@@ -9,7 +14,7 @@ export function createStoreCommand(): Command {
   store
     .command('get')
     .description('Get an item from the store')
-    .argument('<namespace>', 'Namespace to get the item from')
+    .argument('<namespace>', 'Namespace to get the item from (use . or , for multi-part namespaces)')
     .argument('<key>', 'Key of the item to retrieve')
     .option('-c, --config <path>', 'path to config file')
     .option('--url <url>', 'LangGraph server URL')
@@ -23,7 +28,8 @@ export function createStoreCommand(): Command {
         });
 
         const client = createClient(config);
-        const result = await client.store.getItem([namespace], key);
+        const namespaceArray = parseNamespace(namespace);
+        const result = await client.store.getItem(namespaceArray, key);
         
         if (!result || !result.value) {
           console.log(JSON.stringify({ 
@@ -48,7 +54,7 @@ export function createStoreCommand(): Command {
   store
     .command('set')
     .description('Set an item in the store')
-    .argument('<namespace>', 'Namespace to store the item in')
+    .argument('<namespace>', 'Namespace to store the item in (use . or , for multi-part namespaces)')
     .argument('<key>', 'Key of the item')
     .argument('<value>', 'Value to store (JSON string)')
     .option('-c, --config <path>', 'path to config file')
@@ -72,7 +78,8 @@ export function createStoreCommand(): Command {
           parsedValue = value;
         }
 
-        await client.store.putItem([namespace], key, { value: parsedValue });
+        const namespaceArray = parseNamespace(namespace);
+        await client.store.putItem(namespaceArray, key, { value: parsedValue });
         
         console.log(JSON.stringify({
           message: `Item set successfully: ${namespace}/${key}`
@@ -86,7 +93,7 @@ export function createStoreCommand(): Command {
   store
     .command('delete')
     .description('Delete an item from the store')
-    .argument('<namespace>', 'Namespace of the item')
+    .argument('<namespace>', 'Namespace of the item (use . or , for multi-part namespaces)')
     .argument('<key>', 'Key of the item to delete')
     .option('-c, --config <path>', 'path to config file')
     .option('--url <url>', 'LangGraph server URL')
@@ -100,7 +107,8 @@ export function createStoreCommand(): Command {
         });
 
         const client = createClient(config);
-        await client.store.deleteItem([namespace], key);
+        const namespaceArray = parseNamespace(namespace);
+        await client.store.deleteItem(namespaceArray, key);
         
         console.log(JSON.stringify({
           message: `Item deleted successfully: ${namespace}/${key}`
@@ -114,7 +122,7 @@ export function createStoreCommand(): Command {
   store
     .command('list')
     .description('List items in a namespace')
-    .argument('<namespace>', 'Namespace to list items from')
+    .argument('<namespace>', 'Namespace to list items from (use . or , for multi-part namespaces)')
     .option('-c, --config <path>', 'path to config file')
     .option('--url <url>', 'LangGraph server URL')
     .option('--api-key <key>', 'API key for authentication')
@@ -130,7 +138,8 @@ export function createStoreCommand(): Command {
         });
 
         const client = createClient(config);
-        const result = await client.store.searchItems([namespace], {
+        const namespaceArray = parseNamespace(namespace);
+        const result = await client.store.searchItems(namespaceArray, {
           limit: parseInt(options.limit),
           offset: options.offset,
           query: options.query
@@ -166,8 +175,8 @@ export function createStoreCommand(): Command {
     .option('--api-key <key>', 'API key for authentication')
     .option('--limit <number>', 'Maximum number of namespaces to return', '50')
     .option('--offset <string>', 'Pagination offset')
-    .option('--prefix <string>', 'Filter by namespace prefix (comma-separated)')
-    .option('--suffix <string>', 'Filter by namespace suffix (comma-separated)')
+    .option('--prefix <string>', 'Filter by namespace prefix (use . or , to separate multiple prefixes)')
+    .option('--suffix <string>', 'Filter by namespace suffix (use . or , to separate multiple suffixes)')
     .action(async (options) => {
       try {
         const fileConfig = loadConfig(options.config);
@@ -180,8 +189,8 @@ export function createStoreCommand(): Command {
         const result = await client.store.listNamespaces({
           limit: parseInt(options.limit),
           offset: options.offset,
-          prefix: options.prefix ? options.prefix.split(',') : undefined,
-          suffix: options.suffix ? options.suffix.split(',') : undefined
+          prefix: options.prefix ? parseNamespace(options.prefix) : undefined,
+          suffix: options.suffix ? parseNamespace(options.suffix) : undefined
         });
         
         if (result.namespaces.length === 0) {
